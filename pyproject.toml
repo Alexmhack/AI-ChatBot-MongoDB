@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "QuadzAIBot"
+version = "0.1.0"
+description = "AI Chatbot for the Quadz Customer Support Platform built using Streamlit, Langchain & OpenAI"
+authors = ["Pranav Singh Gour <pranav.sg@arthink.ai>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.2.2"
+langchain = "^0.1.16"
+openai = "^1.23.6"
+streamlit = "^1.33.0"
+psycopg2 = "^2.9.9"
+langchain-community = "^0.0.34"
+langchain-openai = "^0.1.4"
+black = "^24.4.2"
+python-dotenv = "^1.0.1"
+langchainhub = "^0.1.15"
+matplotlib = "^3.8.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
