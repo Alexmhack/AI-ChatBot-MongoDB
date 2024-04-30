@@ -29,16 +29,16 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
 st.set_page_config(
-    page_title="Quadz Agent",
+    page_title="Quadz AI Bot",
     page_icon="🦜",
     layout="wide",
     menu_items={
-        "Get Help": "https://www.extremelycoolapp.com/help",
-        "Report a bug": "https://www.extremelycoolapp.com/bug",
-        "About": "# This is a header. This is an *extremely* cool app!",
+        "Get Help": "https://quadz.arthink.ai",
+        "Report a bug": "https://quadz.arthink.ai",
+        "About": "Quadz AI Agent [BETA]",
     },
 )
-st.title("🦜 Quadz Agent")
+st.title("Quadz AI Bot")
 
 # Setup agents
 llm = ChatOpenAI(
