@@ -8,6 +8,10 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     git \
     pipx \
+    postgresql \
+    postgresql-contrib \
+    libpq-dev \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pipx install poetry

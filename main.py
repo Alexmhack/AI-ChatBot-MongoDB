@@ -100,7 +100,7 @@ def db_data(input_query: str) -> list:
         pass
 
     if user_message:
-        url = "http://127.0.0.1:8000/SQL/query"
+        url = os.getenv("DB_TOOL_API")
 
         payload = json.dumps({"chatQuery": user_message})
         headers = {"Content-Type": "application/json"}
