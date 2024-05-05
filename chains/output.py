@@ -1,4 +1,5 @@
 import json
+import pandas as pd
 
 from typing import Union, List, Dict, Any
 
@@ -16,12 +17,21 @@ def get_nosql_output(llm_output: str) -> Union[List[Any], Dict[str, Any]]:
     """
     Function to run the pymongo code in MongoDB
     """
+    print("LLM OUTPUT", llm_output)
 
     def _convert_to_dict(string: str) -> dict:
         try:
-            return json.loads(string)
+            import datetime
+
+            return eval(string)
         except Exception as e:
-            print(f"Error while converting NoSQL LLM output: {e}")
+            print(f"Error while converting NoSQL LLM output: {e}. ")
+            try:
+                return json.loads(string)
+            except Exception as e:
+                print(f"Error with json.loads as well: {e}")
+
+        return {}
 
     def _get_col_pipeline(llm_parsed_output: Union[Dict[str, str], str]) -> str:
         llm_json_output = _convert_to_dict(llm_parsed_output)
@@ -50,6 +60,8 @@ def get_nosql_output(llm_output: str) -> Union[List[Any], Dict[str, Any]]:
             return (collection, pipeline)
 
     collection_name, pymongo_pipeline = _get_col_pipeline(llm_output)
+    if not collection_name and not pymongo_pipeline:
+        return pd.DataFrame()
 
     db = NoSQLDatabase.from_uri(MONGODB_URI)
 

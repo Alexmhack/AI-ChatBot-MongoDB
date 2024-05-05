@@ -4,16 +4,16 @@ import pandas as pd
 from streamlit_feedback import streamlit_feedback
 
 from chains.st import create_st_nosql_query_chain
-from utilities import create_id, submit_feedback, CustomStreamlitChatMessageHistory
+from utilities import (
+    get_current_session_id,
+    submit_feedback,
+    get_session_history_by_id,
+)
 from config import EXTERNAL_SCHEMA_API_ENDPOINT
 
 
 ## Setup current streamlit session
-if "session_id" not in st.session_state:
-    session_id = create_id()
-    st.session_state["session_id"] = session_id
-else:
-    session_id = st.session_state["session_id"]
+session_id = get_current_session_id()
 
 
 ## Setting the page config for streamlit UI
@@ -31,15 +31,15 @@ st.set_page_config(
 st.title("Quadz AI Bot")
 
 ## Set up memory
-chat_conversation = CustomStreamlitChatMessageHistory(key="chat_conversation")
+chat_conversation = get_session_history_by_id(session_id)
 
 ## Setup LLM chain
-chain = create_st_nosql_query_chain(chat_conversation=chat_conversation)
+chain = create_st_nosql_query_chain(get_session_history=get_session_history_by_id)
 
 ## Clear conversation history button
 if st.sidebar.button("Clear Conversation"):
     chat_conversation.clear()
-    st.success("Conversation Cleared!")
+    st.success("Conversation History Cleared!")
 
 # Add first message when page loads
 if len(chat_conversation.messages) == 0:
@@ -99,21 +99,22 @@ for n, msg in enumerate(chat_conversation.messages):
 user_query = st.chat_input(placeholder="Your Quadz Personal Assistant!")
 
 if user_query:
-    chat_conversation.add_user_message(user_query)
+    # chat_conversation.add_user_message(user_query)
     st.chat_message("user").write(user_query)
 
     config = {"configurable": {"session_id": session_id}}
     # actual LLM usage
-    response = chain.invoke(
-        {"input": user_query, "use_external_uri": EXTERNAL_SCHEMA_API_ENDPOINT},
-        config,
-    )
+    with st.chat_message("assistant"):
+        with st.spinner(""):
+            response = chain.invoke(
+                {"input": user_query, "use_external_uri": EXTERNAL_SCHEMA_API_ENDPOINT},
+                config,
+            )
 
-    if isinstance(response, str):
-        chat_conversation.add_ai_message(response)
-        st.chat_message("assistant").write(response)
-    elif isinstance(response, (list, dict, pd.DataFrame)):
-        chat_conversation.add_message(response)
-        with st.chat_message("assistant"):
-            st.dataframe(response)
+            if isinstance(response, str):
+                # chat_conversation.add_ai_message(response)
+                st.write(response)
+            elif isinstance(response, (list, dict, pd.DataFrame)):
+                chat_conversation.add_message(response)
+                st.dataframe(response)
     st.rerun()  # for showing the feedback thumbs after AI message

@@ -19,7 +19,7 @@ from config import OPENAI_API_KEY
 
 
 def create_st_nosql_query_chain(
-    chat_conversation: BaseChatMessageHistory,
+    get_session_history,
     model_name: Optional[str] = "gpt-4-turbo",
 ) -> Runnable[Dict[str, Any], str]:
     llm = ChatOpenAI(
@@ -32,7 +32,7 @@ def create_st_nosql_query_chain(
     chat_chain = CHAT_PROMPT | llm | CustomOutputParser()
     chat_chain_with_memory = RunnableWithMessageHistory(
         chat_chain,
-        lambda session_id: chat_conversation,
+        get_session_history=get_session_history,
         input_messages_key="input",
         history_messages_key="history",
     )

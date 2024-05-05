@@ -1,6 +1,7 @@
 import os
 
 from typing import Optional, Any, Dict
+from datetime import datetime
 from langchain_core.language_models import BaseLanguageModel
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import BasePromptTemplate
@@ -104,14 +105,14 @@ def create_nosql_query_chain(
 
     # the acutal query chain which returns the query
     inputs = {
-        "input": lambda x: f"{x['input']}\nNOTE: Include tickets collection data(subject, date, id, uuid) using aggregation wherever possible including the rest of the collection info",
+        "input": lambda x: f"{x['input']}\nNOTE: Include tickets collection data(subject, date, id, uuid) using aggregation wherever possible including the rest of the collection info.",
         "collection_info": lambda x: db.get_collection_info(
             use_external_uri=x.get("use_external_uri", False),
         ),
     }
     return (
         RunnablePassthrough.assign(**inputs)
-        | prompt_to_use  # .partial(top_k=str(k))  # top_k not needed
+        | prompt_to_use.partial(current_date=datetime.now().strftime("%Y-%m-%d %H:%M"))
         | llm.bind(stop=["\nJSON object:"])
         | StrOutputParser()
         | _strip

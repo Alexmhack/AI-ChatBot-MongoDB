@@ -33,8 +33,7 @@ Unless the user specifies in the question a specific number of examples to obtai
 Never query for all columns from a collection. You must query only the columns that are needed to answer the question.
 Use pymongo aggregate etc helpful methods wherever needed.
 Pay attention to use only the column names you can see in the collections below. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which collection.
-Pay attention to use $currentDate operator to get the current date, if the question involves "today".
-Pay attention to use $dateSubtract etc operators to query with dates, don't use python code at all!.
+Pay attention - Todays date & time is {current_date}. If user query involves uncertain date then always calculate year, month, date, time using python's datetime module. Don't use ISODate or any other MongoDB Operator.
 Do not include any explanations, only provide a JSON object following this format without deviation.
 
 {{"collection": value of MongoDBCollection to run pymongo pipeline, "pipeline": value of pymongo pipeline}}
@@ -42,13 +41,20 @@ JSON object:
 """
 
 """
+Pay attention to use $currentDate operator to get the current date, if the question involves any uncertain date.
+Pay attention to use $dateSubtract etc operators to query with dates, don't use python code at all!.
+
 PyMongoPipeline: pymongo pipeline to run
 MongoDBCollection: MongoDB collection to run PyMongoPipeline
 NoSQLResult: Result of the PyMongoPipeline
 """
 
 MONGODB_PROMPT = PromptTemplate(
-    input_variables=["input", "collection_info"],  # , "top_k" -> not needed
+    input_variables=[
+        "input",
+        "collection_info",
+        "current_date",
+    ],  # , "top_k" -> not needed
     template=_mongod_prompt + PROMPT_SUFFIX,
 )
 
