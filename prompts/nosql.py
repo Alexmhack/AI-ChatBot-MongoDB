@@ -34,8 +34,9 @@ Never query for all columns from a collection. You must query only the columns t
 Use pymongo aggregate etc helpful methods wherever needed.
 Pay attention to following points,
 - Use only the column names you can see in the collections below. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which collection.
-- Todays date & time is {current_date}. If user query involves uncertain date then always calculate year, month, date, time using python's datetime module. Don't use ISODate or any other MongoDB Date Operator.
+- Todays date & time is {current_date}. If user query involves date then always use python's datetime module. Don't use ISODate or any other MongoDB Date Operator.
 - Use $lookup when referencing other collections.
+- MongoDB Operators should be suffixed with $ strictly.
 - Do not include any explanations, only provide a JSON object following this format without deviation.
 
 {{"collection": value of MongoDBCollection to run pymongo pipeline, "pipeline": value of pymongo pipeline}}
