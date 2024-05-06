@@ -15,7 +15,7 @@ DISPLAY_PROMPT = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "Read data and return a sentence",
+            "Read data and return a sentence. For example for a prompt: 'how many tickets have negative sentiment?', if the data has only one entry then respond with: 'There is only 1 ticket with id: <ticket_id> which has negative sentiment.",
         ),
         ("user", "{input}"),
     ]
