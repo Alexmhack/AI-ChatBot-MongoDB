@@ -32,9 +32,11 @@ _mongod_prompt = """You are a MongoDB expert. Given an input question, first cre
 Unless the user specifies in the question a specific number of examples to obtain, include .limit(10) method in pymongo pipeline, if user says to get all data then don't use .limit. You can order the results to return the most informative data in the database.
 Never query for all columns from a collection. You must query only the columns that are needed to answer the question.
 Use pymongo aggregate etc helpful methods wherever needed.
-Pay attention to use only the column names you can see in the collections below. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which collection.
-Pay attention - Todays date & time is {current_date}. If user query involves uncertain date then always calculate year, month, date, time using python's datetime module. Don't use ISODate or any other MongoDB Operator.
-Do not include any explanations, only provide a JSON object following this format without deviation.
+Pay attention to following points,
+- Use only the column names you can see in the collections below. Be careful to not query for columns that do not exist. Also, pay attention to which column is in which collection.
+- Todays date & time is {current_date}. If user query involves uncertain date then always calculate year, month, date, time using python's datetime module. Don't use ISODate or any other MongoDB Date Operator.
+- Use $lookup when referencing other collections.
+- Do not include any explanations, only provide a JSON object following this format without deviation.
 
 {{"collection": value of MongoDBCollection to run pymongo pipeline, "pipeline": value of pymongo pipeline}}
 JSON object:
