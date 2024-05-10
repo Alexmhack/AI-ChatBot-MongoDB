@@ -6,7 +6,7 @@ AI Chatbot for the Quadz Customer Support Platform built using Streamlit, Langch
 
 1. Install `poetry` globally using [`pipx`](https://github.com/pypa/pipx)
     `pipx install poetry`
-2. Create *.env* file by taking reference from *.env.example* and based upon your Database usecase, following the below sections for updating your .env with DB credentials.
+2. Create *.env* file by taking reference from *.env.example* and based upon your Database usecase, follow the below sections for updating your .env with DB credentials.
 
 ### NoSQL Database
 
@@ -14,7 +14,7 @@ AI Chatbot for the Quadz Customer Support Platform built using Streamlit, Langch
 2. Change your working directory to the root of this repo and run,
     `poetry install`
 3. In your *.env*, add your MongoDB credentials.
-4. simply comment out `MONDODB_REPLICA_SET_NAME` environment variable since it is not required for local or development run.
+4. Simply comment out `MONDODB_REPLICA_SET_NAME` environment variable since it is not required for local or development run.
 
 
 ### SQL Database
@@ -46,10 +46,19 @@ There are few other useful commands that are listed in the *Makefile*.
 
 ## Issues with SQL DB Usecase
 
-OpenAI models used in [NLPReporting](https://github.com/ARThink-AI/NLPReporting/tree/dev) Repo for SQL Query API use the GPT Legacy APIs which allows max token length in context of around 4K tokens which can be an issue if your SQL Database schema text consumes more than this context length. Possible solutions,
+OpenAI models used in [NLPReporting](https://github.com/ARThink-AI/NLPReporting/tree/dev) Repo for SQL Query API use the OpenAI Legacy APIs which allows max context token length of around 4K tokens which can be an issue if your SQL Database schema text consumes more than this context length. Possible solutions,
 
 1. Replace the Model used in NLPReporting -> *SQLQueryAPI* -> *src/services/sqllangchain_service.py* from default to the OpenAI Chat Completions Models(*gpt-3.5-turbo*, *gpt-4-turbo*) which have larger context length.
-2. Change the prompt passed to these models to return only the SQL query and not the description too. Below is an example of MongoDB prompt to *gpt-4-turbo* model
+   Basic Example,
+   ```
+   from langchain_openai import ChatOpenAI
+
+   def get_query(chat_query, db_uri):
+       db = SQLDatabase.from_uri(db_uri)
+       llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)  # gpt-4-turbo
+       ...
+   ```
+3. Change the prompt passed to these models to return only the SQL query and not the description too. Below is an example of MongoDB prompt to *gpt-4-turbo* model
 
     Main sentence in the prompt is **Do not include any explanations, only provide a JSON object following this format without deviation.**
     ```
