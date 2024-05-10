@@ -1,4 +1,4 @@
-all : build run
+all : build run-docker run-app run-streamlit
 .PHONY : all
 
 build:
