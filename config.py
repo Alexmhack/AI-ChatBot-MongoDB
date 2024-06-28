@@ -1,5 +1,6 @@
 import os
 import logging
+import urllib.parse
 
 from pathlib import Path
 from dotenv import load_dotenv
@@ -33,13 +34,13 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 EXTERNAL_SCHEMA_API_ENDPOINT = os.getenv("EXTERNAL_SCHEMA_API_ENDPOINT")
 DB_TOOL_API = os.getenv("DB_TOOL_API")
 
-MONGODB_USERNAME = os.getenv("MONGODB_USERNAME")
-MONGODB_PASSWORD = os.getenv("MONGODB_PASSWORD")
+MONGODB_USERNAME = urllib.parse.quote_plus(os.getenv("MONGODB_USERNAME"))
+MONGODB_PASSWORD = urllib.parse.quote_plus(os.getenv("MONGODB_PASSWORD"))
 MONGODB_HOST = os.getenv("MONGODB_HOST")
 MONGODB_PORT = os.getenv("MONGODB_PORT")
 MONGODB_DB = os.getenv("MONGODB_DB")
 MONDODB_REPLICA_SET_NAME = os.getenv("MONDODB_REPLICA_SET_NAME")
 
-MONGODB_URI = f"mongodb://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_HOST}:{MONGODB_PORT}/{MONGODB_DB}?authSource={MONGODB_DB}"
+MONGODB_URI = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_HOST}/{MONGODB_DB}?authSource={MONGODB_DB}"
 if MONDODB_REPLICA_SET_NAME:
     MONGODB_URI += f"&replicaSet={MONDODB_REPLICA_SET_NAME}"

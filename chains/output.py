@@ -98,6 +98,7 @@ def get_final_output(response: dict) -> str:
             model="gpt-4-turbo",
             temperature=0,
             openai_api_key=OPENAI_API_KEY,
+            model_kwargs={"response_format": {"type": "json_object"}},
         )
         db = NoSQLDatabase.from_uri(MONGODB_URI)
         nosql_query_chain = create_nosql_query_chain(llm, db)
