@@ -105,7 +105,7 @@ def create_nosql_query_chain(
 
     # the acutal query chain which returns the query
     inputs = {
-        "input": lambda x: f"{x['input']}\nNOTE: Include tickets collection data(subject, date, id, uuid) using aggregation only if tickets is linked to the collection in use by checking the collections schema(otherwise strictly don't include tickets), include the rest of the collection info as well.",
+        "input": lambda x: f"{x['input']}\nNOTE: Along with the rest of the collection info, include tickets collection data(subject, date, id, uuid) using aggregation only if tickets is linked to the collection in use by checking the collections schema(otherwise strictly don't include tickets)",
         "collection_info": lambda x: db.get_collection_info(
             use_external_uri=x.get("use_external_uri", False),
         ),
