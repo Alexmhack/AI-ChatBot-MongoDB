@@ -1,5 +1,5 @@
-# QuadzAIBot
-AI Chatbot for the Quadz Customer Support Platform built using Streamlit, Langchain &amp; OpenAI
+# AI ChatBot MongoDB
+AI Chatbot that can be integrated Applications specifically using MongoDB Database. Built using Streamlit, Langchain & OpenAI & Custom MongoDB Connector.
 
 ## Setup
 *NOTE: Instructions for Ubuntu 22*
