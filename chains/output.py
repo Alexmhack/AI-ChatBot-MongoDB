@@ -95,7 +95,7 @@ def get_final_output(response: dict) -> str:
     if tool_used:
         # chain to get the pymongo code to run in MongoDB
         llm = ChatOpenAI(
-            model="gpt-4",
+            model="gpt-4-turbo",
             temperature=0,
             openai_api_key=OPENAI_API_KEY,
         )

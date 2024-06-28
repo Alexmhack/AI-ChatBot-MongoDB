@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(
     filename=LOGS_DIR / "stdout.log",
     encoding="utf-8",
-    level=logging.DEBUG,
+    level=logging.ERROR,
     format="%(asctime)s %(levelname)-8s %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
